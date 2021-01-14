@@ -1,6 +1,4 @@
 import csv
-line = []
-input_file = csv.DictReader(open("covid_safety_measures.csv"))
 
-for line in input_file:
-    print(line)
+covid_cases_stats = csv.DictReader(open("covid_cases_stats.csv"))
+covid_safety_measures = csv.DictReader(open("covid_safety_measures.csv"))
