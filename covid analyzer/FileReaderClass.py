@@ -1,17 +1,9 @@
 class FileReader:
-    def cases_reader_1(self, file_path):
-        cases_reader_1 = csv.DictReader(open(file_path))
-        cases_dict=[]
-        for row in cases_reader_1:
+    def covid_cases_reader(self, file_path):
+        covid_cases_reader = csv.DictReader(open(file_path))
+        for row in covid_cases_reader:
             lines = dict(row)
             print(lines)
-
-
-    def cases_reader_2(self,file_path):
-        cases_reader_2 = csv.DictReader(open(file_path))
-        for row in cases_reader_2:
-            lines_2 = dict(row)
-            print(lines_2)
 
 #class Country:
     def __init__(self, file_path, name, total_cases, new_cases, total_deaths, new_deaths, total_recovered, active_cases,\
