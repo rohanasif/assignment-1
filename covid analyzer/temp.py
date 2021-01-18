@@ -1,10 +1,7 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Jan 18 12:58:53 2021
-
-@author: rohan
-"""
-
 import csv
 
-with open 
+covid_cases_reader = csv.DictReader(open("covid_cases_stats.csv"))
+lines=[]
+for row in covid_cases_reader:
+    lines.append(dict(row))
+return lines
