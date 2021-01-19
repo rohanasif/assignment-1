@@ -1,21 +1,18 @@
-import csv
+
 import argparse
+from FileReader import FileReader
 
 # Create the parser
-parser = argparse.ArgumentParser()
+#parser = argparse.ArgumentParser()
 # Add an argument
-parser.add_argument('-a', type=str, required=True)
+#parser.add_argument('-a', type=str, required=True)
 # Parse the argument
-args = parser.parse_args()
+#args = parser.parse_args()
 
-input_file = csv.DictReader(open("covid_cases_stats.csv"))
-for row in input_file:
-    c = row['country']
-    if c == args.a:
-        Recovered = int(row['total_recovered'])
-        total = int(row['total_cases'])
-        print(c)
-        print(Recovered/total)
+file_reader = FileReader()
+cases_dict = file_reader.covid_cases_reader("covid_cases_stats.csv")
+print([case.name for case in cases_dict])
+
 
     # task 1: For a given country, display the ratio of recovered patients over total cases.
     # commandline input: covidanalyzer.py /path/to/files-dir -a "Pakistan"
