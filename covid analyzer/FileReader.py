@@ -2,7 +2,6 @@ import csv
 
 
 class FileReader:
-    import csv
     def covid_cases_reader(self, file_path):
         covid_cases_reader = csv.DictReader(open(file_path))
         lines = []
@@ -13,9 +12,18 @@ class FileReader:
             lines.append(country)
         return lines
 
-class Country:
-    def __init__(self, name, total_cases, new_cases, total_deaths, new_deaths, total_recovered, active_cases,serious_critical_cases):
+    def covid_measures_reader(self, file_path):
+        covid_measures_reader = csv.DictReader(open(file_path))
+        lines_2 = []
+        for row in covid_measures_reader:
+            measure = Measure(row['measure'], row['country'])
+            lines_2.append(measure)
+        return lines_2
 
+
+class Country:
+    def __init__(self, name, total_cases, new_cases, total_deaths, new_deaths, total_recovered, active_cases,
+                 serious_critical_cases):
         self.name = name
         self.total_cases = total_cases
         self.new_cases = new_cases
@@ -24,3 +32,9 @@ class Country:
         self.total_recovered = total_recovered
         self.active_cases = active_cases
         self.serious_critical_cases = serious_critical_cases
+
+
+class Measure:
+    def __init__(self, measure, countries_list):
+        self.measure = measure
+        self.countries_list = countries_list
