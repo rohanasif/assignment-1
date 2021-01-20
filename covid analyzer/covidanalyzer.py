@@ -3,20 +3,23 @@ import argparse
 from FileReader import FileReader
 
 # Create the parser
-# parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser()
 # Add an argument
-# parser.add_argument('-a', type=str, required=True)
+parser.add_argument('-a', type=str, required=True)
 # Parse the argument
-# args = parser.parse_args()
+args = parser.parse_args()
+
 file_reader = FileReader()
 cases_dict = file_reader.covid_cases_reader("covid_cases_stats.csv")
-recovered_cases = ([case.total_recovered for case in cases_dict])
-total_cases = ([case.total_cases for case in cases_dict])
-names = ([case.name for case in cases_dict])
-country_input = input("Enter the name of a country: ")
-required_index = names.index(country_input)
-required_ratio = int(recovered_cases[required_index])/int(total_cases[required_index])
-print("The required ratio is ", required_ratio)
+for row in cases_dict:
+    c = ([case.name for case in cases_dict])
+    if c == args.a:
+        recovered_cases = ([case.total_recovered for case in cases_dict])
+        total_cases = ([case.total_cases for case in cases_dict])
+        print(c)
+        print(int(recovered_cases[required_index])/int(total_cases[required_index]))
+
+
 
 
 # measures_reader = FileReader()
