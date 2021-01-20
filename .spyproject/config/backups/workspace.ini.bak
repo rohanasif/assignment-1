@@ -1,0 +1,10 @@
+[workspace]
+restore_data_on_startup = True
+save_data_on_exit = True
+save_history = True
+save_non_project_files = False
+
+[main]
+version = 0.2.0
+recent_files = ['covid analyzer\\covidanalyzer.py', 'covid analyzer\\covidanalyzer2.py', 'covid analyzer\\FileReaderClass.py', 'covid analyzer\\input_data.py', 'covid analyzer\\myMod.py', 'covid analyzer\\covid_safety_measures.csv', 'covid analyzer\\b_option_program.py', 'covid analyzer\\temp.py']
+
