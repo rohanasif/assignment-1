@@ -10,8 +10,8 @@ parser.add_argument('-a', type=str, required=True)
 args = parser.parse_args()
 
 # Part (a) calculations
-file_reader = FileReader()
-cases_dict = file_reader.covid_cases_reader("covid_cases_stats.csv")
+
+cases_dict = FileReader().covid_cases_reader("covid_cases_stats.csv")
 recovered_cases = ([case.total_recovered for case in cases_dict])
 total_cases = ([case.total_cases for case in cases_dict])
 names = ([case.name for case in cases_dict])
@@ -22,8 +22,7 @@ required_ratio = int(recovered_cases[required_index])/int(total_cases[required_i
 print("%.2f" % required_ratio)
 
 
-# measures_reader = FileReader()
-# measures_dict = measures_reader.covid_measures_reader("covid_safety_measures.csv")
+# measures_dict = FileReader().covid_measures_reader("covid_safety_measures.csv")
 # print([measure.measure for measure in measures_dict])
 
 
