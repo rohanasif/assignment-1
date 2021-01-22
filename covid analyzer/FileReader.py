@@ -13,7 +13,7 @@ class FileReader:
         return lines
 
     def covid_measures_reader(self, file_path):
-        covid_measures_reader = csv.DictReader(open(file_path, encoding='utf-8'))
+        covid_measures_reader = csv.DictReader(open(file_path, encoding = 'utf-8'))
         lines_2 = []
         for row in covid_measures_reader:
             measure = Measure(row['measure'], row['country'])
