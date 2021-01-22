@@ -1,6 +1,5 @@
 import argparse
-from calculations import part_a
-
+from calculations import recovered_over_total
 
 
 # Create the parser

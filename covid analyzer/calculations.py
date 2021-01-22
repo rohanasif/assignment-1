@@ -2,6 +2,8 @@ import argparse
 from FileReader import FileReader
 
 # Part (a) calculations
+
+
 def recovered_over_total():
     cases_dict = FileReader().covid_cases_reader("covid_cases_stats.csv")
     recovered_cases = ([case.total_recovered for case in cases_dict])
