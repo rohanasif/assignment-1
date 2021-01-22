@@ -23,6 +23,7 @@ def measures_death_rate(args):
     countries_following_required_measure = []
     for i in required_index_2:
         countries_following_required_measure.append(countries[i])
-    countries_following_required_measure = list(dict.fromkeys(countries_following_required_measure))
+    countries_following_required_measure = list(dict.fromkeys(countries_following_required_measure))  # Remove duplicate
+    # entries
     print(countries_following_required_measure)
     cases_dict = FileReader().covid_cases_reader("covid_cases_stats.csv")
