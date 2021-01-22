@@ -10,7 +10,7 @@ parser.add_argument('-a', type=str, required=True)
 # Parse the argument
 args = parser.parse_args()
 
-part_a()
+recovered_over_total()
 
 measures_dict = FileReader().covid_measures_reader("covid_safety_measures.csv")
 print([measure.measure for measure in measures_dict])
