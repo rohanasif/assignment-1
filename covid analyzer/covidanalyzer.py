@@ -10,16 +10,8 @@ parser.add_argument('-b', type=str)
 # Parse the argument
 args = parser.parse_args()
 
-if a:
-    recovered_over_total(args)
-
-elif b:
-    measures_death_rate(args)
-
-elif c:
-
-else:
-    print("Please enter -a, -b, -c followed by relevent argument")
+recovered_over_total(args)
+measures_death_rate(args)
 
 # task 1: For a given country, display the ratio of recovered patients over total cases.
 # commandline input: covidanalyzer.py /path/to/files-dir -a "Pakistan"

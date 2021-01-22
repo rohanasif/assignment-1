@@ -17,8 +17,9 @@ def recovered_over_total(args):
 def measures_death_rate(args):
     measures_dict = FileReader().covid_measures_reader("covid_safety_measures.csv")
     measures_list = [measure.measure for measure in measures_dict]
-    countries_list = [measure.country for measure in measures_dict]
+    countries = [measure.countries_list for measure in measures_dict]
     measure_input = args.b
     required_index_2 = measures_list.index(measure_input)
-    countries_following_required_measure = countries_list[required_index_2]
+    countries_following_required_measure = countries[required_index_2]
+    print(countries_following_required_measure)
     cases_dict = FileReader().covid_cases_reader("covid_cases_stats.csv")
