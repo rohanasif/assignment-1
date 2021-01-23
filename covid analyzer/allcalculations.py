@@ -1,4 +1,3 @@
-import argparse
 from FileReader import FileReader
 
 # Part (a) calculations
