@@ -1,6 +1,5 @@
 import argparse
 from allcalculations import *
-from FileReader import FileReader
 
 # Create the parser
 parser = argparse.ArgumentParser()
