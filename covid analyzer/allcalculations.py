@@ -19,15 +19,15 @@ def measures_death_rate(args):
     measures_list = [measure.measure for measure in measures_dict]  # list of all measures in the file
     countries = [measure.countries_list for measure in measures_dict]  # list of all countries in the file
     measure_input = args.b
-    required_index_2 = [i for i, e in enumerate(measures_list) if e == measure_input]  # list of indexes of countries \
-    # following required measure
+    required_index_in_measures_file = [i for i, e in enumerate(measures_list) if e == measure_input]  # list of indexes\
+    # of countries following required measure
     countries_following_required_measure = []
-    for i in required_index_2:
+    for i in required_index_in_measures_file:
         countries_following_required_measure.append(countries[i])
     countries_following_required_measure = list(dict.fromkeys(countries_following_required_measure))  # remove\
     # duplicates
     # print(len(countries_following_required_measure))
-    # print(countries_following_required_measure)
+    print(countries_following_required_measure)
     # print(len(countries_following_required_measure))
     cases_dict = FileReader().covid_cases_reader("covid_cases_stats.csv")
     total_cases = 0
@@ -45,5 +45,5 @@ def measures_death_rate(args):
     # print(sum(total_cases_in_country))
     # print(sum(total_deaths_in_country))
     # for country in countries_following_required_measure:
-        # total_cases += total_cases_in_country
-        # total_deaths += total_deaths_in_country
+        # total_cases += cases_dict[country].total_cases
+
