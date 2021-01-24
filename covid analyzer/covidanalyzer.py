@@ -10,10 +10,10 @@ parser.add_argument('-b', type=str)
 args = parser.parse_args()
 
 
-if args.a != None:
+if args.a is not None:
     recovered_over_total(args)
 
-if args.b != None:
+if args.b is not None:
     measures_death_rate(args)
 
 
