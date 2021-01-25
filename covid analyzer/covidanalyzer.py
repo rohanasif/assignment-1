@@ -1,21 +1,24 @@
+import allcalculations
 import argparse
-from allcalculations import *
-
 # Create the parser
-parser = argparse.ArgumentParser()
-# Add an argument
-parser.add_argument('-a', type=str)
-parser.add_argument('-b', type=str)
-# Parse the argument
-args = parser.parse_args()
+if __name__ == "__main__":
 
+    parser = argparse.ArgumentParser()
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-a', help="Country Name")
+    group.add_argument('-b', help="Measure")
+    group.add_argument('-c', action='store_true', help="Frequent")
+    
+    args = parser.parse_args()
 
-if args.a is not None:
-    recovered_over_total(args)
-
-if args.b is not None:
-    measures_death_rate(args)
-
+    if args.a:
+        allcalculations.recovered_over_total(args.a)
+    
+    elif args.b:
+        allcalculations.measures_death_rate(args.b)
+    
+    elif args.c:
+        allcalculations.efficiencies()
 
 
 # task 1: For a given country, display the ratio of recovered patients over total cases.
