@@ -1,5 +1,6 @@
 import argparse
 from results_calculator import *
+from FileReader import FileReader
 
 # Create the parser
 parser = argparse.ArgumentParser()
@@ -10,13 +11,16 @@ group.add_argument('-b', help="Measure")
 group.add_argument('-c', action='store_true', help="Frequent")
 # Parse the argument
 args = parser.parse_args()
-
+file_reader = FileReader()
+cases_dict = file_reader.covid_cases_reader("covid_cases_stats.csv")
+measures_dict = file_reader.covid_measures_reader("covid_safety_measures.csv")
+resultscalculator = ResultsCalculator()
 
 if args.a:
-    recovered_over_total(args)
+    resultscalculator.recovered_over_total(args, cases_dict)
 
-if args.b:
-    measures_death_rate(args)
+elif args.b:
+    resultscalculator.measures_death_rate(args, cases_dict, measures_dict)
 
 # if args.c is not None:
 #     top_5_efficiencies(args)
