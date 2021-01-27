@@ -6,6 +6,7 @@ parser = argparse.ArgumentParser()
 # Add an argument
 parser.add_argument('-a', type=str)
 parser.add_argument('-b', type=str)
+parser.add_argument('-c', type=str)
 # Parse the argument
 args = parser.parse_args()
 
@@ -15,8 +16,6 @@ if args.a is not None:
 
 if args.b is not None:
     measures_death_rate(args)
-
-
 
 # task 1: For a given country, display the ratio of recovered patients over total cases.
 # commandline input: covidanalyzer.py /path/to/files-dir -a "Pakistan"
