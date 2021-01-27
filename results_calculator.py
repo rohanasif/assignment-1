@@ -1,5 +1,6 @@
 import argparse
 from FileReader import FileReader
+from collections import Counter
 
 # Part (a) calculations
 def recovered_over_total(args):
@@ -48,6 +49,3 @@ def measures_death_rate(args):
 
     print(str((total_deaths/total_cases)*100) + "% death average found in " +
           (str(len(countries_following_required_measure))) + " countries")
-
-# Part (c) calculations
-# def top_5_efficiencies(args):

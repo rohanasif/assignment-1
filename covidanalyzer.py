@@ -1,21 +1,26 @@
 import argparse
-from allcalculations import *
+from results_calculator import *
 
 # Create the parser
 parser = argparse.ArgumentParser()
-# Add an argument
-parser.add_argument('-a', type=str)
-parser.add_argument('-b', type=str)
-parser.add_argument('-c', type=str)
+# Add an argument group
+group = parser.add_mutually_exclusive_group()
+group.add_argument('-a', help="Country Name")
+group.add_argument('-b', help="Measure")
+group.add_argument('-c', action='store_true', help="Frequent")
 # Parse the argument
 args = parser.parse_args()
 
 
-if args.a is not None:
+if args.a:
     recovered_over_total(args)
 
-if args.b is not None:
+if args.b:
     measures_death_rate(args)
+
+# if args.c is not None:
+#     top_5_efficiencies(args)
+
 
 # task 1: For a given country, display the ratio of recovered patients over total cases.
 # commandline input: covidanalyzer.py /path/to/files-dir -a "Pakistan"
