@@ -19,31 +19,35 @@ def measures_death_rate(args):
     measures_list = [measure.measure for measure in measures_dict]  # list of all measures in the file
     countries = [measure.countries_list for measure in measures_dict]  # list of all countries in the file
     measure_input = args.b
-    required_index_2 = [i for i, e in enumerate(measures_list) if e == measure_input]  # list of indexes of countries \
+    required_index = [i for i, e in enumerate(measures_list) if e == measure_input]  # list of indexes of countries \
     # following required measure
     countries_following_required_measure = []
-    for i in required_index_2:
+    for i in required_index:
         countries_following_required_measure.append(countries[i])
     countries_following_required_measure = list(dict.fromkeys(countries_following_required_measure))  # remove\
     # duplicates
-    # print(len(countries_following_required_measure))
-    # print(countries_following_required_measure)
-    # print(len(countries_following_required_measure))
     cases_dict = FileReader().covid_cases_reader("covid_cases_stats.csv")
     total_cases = 0
     total_deaths = 0
-    total_cases_in_country = ([int(case.total_cases) for case in cases_dict])
-    # print(total_cases_in_country)
-    # print(len(total_cases_in_country))
-    total_deaths_in_country = ([case.total_deaths for case in cases_dict])
-    for i in range(0, len(total_deaths_in_country)):  # loop to convert all string nums to int nums
-        if total_deaths_in_country[i] == '':
-            total_deaths_in_country[i] = '0'
-        total_deaths_in_country[i] = int(total_deaths_in_country[i])
-    # print(total_deaths_in_country)
-    # print(len(total_deaths_in_country))
-    # print(sum(total_cases_in_country))
-    # print(sum(total_deaths_in_country))
-    # for country in countries_following_required_measure:
-        # total_cases += total_cases_in_country
-        # total_deaths += total_deaths_in_country
+    total_cases_in_each_country = ([int(case.total_cases) for case in cases_dict])
+    total_deaths_in_each_country = ([case.total_deaths for case in cases_dict])
+    for i in range(0, len(total_deaths_in_each_country)):  # loop to convert all string nums to int nums
+        if total_deaths_in_each_country[i] == '':
+            total_deaths_in_each_country[i] = '0'
+        total_deaths_in_each_country[i] = int(total_deaths_in_each_country[i])
+    names = ([case.name for case in cases_dict])
+    print(len(total_cases_in_each_country))
+    countries_index=[]
+    for name in names:
+        if name in countries_following_required_measure:
+            countries_index.append(names.index(name))
+    #print(countries_index)
+    for index in countries_index:
+        total_cases += total_cases_in_each_country[index]
+        total_deaths += total_deaths_in_each_country[index]
+
+    print(str((total_deaths/total_cases)*100) + "% death average found in " +
+          (str(len(countries_following_required_measure))) + " countries")
+
+# Part (c) calculations
+# def top_5_efficiencies(args):
