@@ -22,8 +22,8 @@ if args.a:
 elif args.b:
     resultscalculator.measures_death_rate(args, cases_dict, measures_dict)
 
-# if args.c is not None:
-#     top_5_efficiencies(args)
+elif args.c:
+    resultscalculator.most_common_efficiencies(args, cases_dict, measures_dict)
 
 
 # task 1: For a given country, display the ratio of recovered patients over total cases.
