@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser()
 group = parser.add_mutually_exclusive_group()
 group.add_argument('-a', help="Country Name")
 group.add_argument('-b', help="Measure")
-group.add_argument('-c', action='store_true', help="Frequent")
+group.add_argument('-c', action='store_true', help="List Top 5 Measure Efficiencies")
 # Parse the argument
 args = parser.parse_args()
 file_reader = FileReader()
