@@ -7,7 +7,8 @@ class JobsSpider(scrapy.Spider):
     ]
 
     def parse(self, response):
-        # syntax : response.css(".storylink::text")[i].extract().lower().split("hiring")[1] for job titles
-        # syntax : response.css(".sitestr::text").extract() for company site
-        # syntax : response.css(".title a::attr(href)").extract() even indices for job sites
-        # syntax : response.css(".age a::text").extract() for time posted
+        # job_titles = response.css(".storylink::text")[i].extract().lower().split("hiring")[1] # for job titles
+        # company_links = response.css(".sitestr::text").extract() # for company site (ycombinator links missing)
+        # job_links = response.css(".storylink ::attr(href)").extract() # for job sites (ycombinator jobs have id)
+        date_posted = response.css(".age a::text").extract()  # for date posted, datetime.datetime.now()-datetime.timedelta(days_ago))
+        yield {"date_posted" : date_posted}d
