@@ -7,21 +7,21 @@ class JobsSpider(scrapy.Spider):
     ]
 
     def parse(self, response):
-        items = response.css("tr")
+        items = response.css("tr.athing")
+        times = response.css("td.subtext")
         for item in items:
 
-                job_title = item.css(".athing td.title a.storylink::text").get()
-                company_url = item.css(".athing td.title span.sitebit.comhead a span.sitestr::text").get()
-                job_url = item.css("tr.athing td.title a.storylink ::attr(href)").get()
-                job_posting_date = item.css("td.subtext span.age a::text").get()
+                job_title = item.css("td.title a.storylink::text").get()
+                company_url = item.css("td.title span.sitebit.comhead a span.sitestr::text").get()
+                job_url = item.css("td.title a.storylink ::attr(href)").get()
                 if job_title and job_url:
                     yield{
                         'Job title': job_title, 'Company URL': company_url, 'Job URL': job_url
                     }
 
-        for item in items:
+        for time in times:
 
-                job_posting_date = item.css("td.subtext span.age a::text").get()
+                job_posting_date = time.css("span.age a::text").get()
                 if job_posting_date:
                     yield{
                         'Job posting date': job_posting_date
