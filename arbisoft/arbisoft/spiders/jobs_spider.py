@@ -16,6 +16,7 @@ class JobsSpider(scrapy.Spider):
         company_urls = []
         job_urls = []
         job_posting_dates = []
+        ycombinatorlink = 'https://news.ycombinator.com/'
         for item in items:
 
             job_title = item.css("a.storylink::text").get()
@@ -36,7 +37,6 @@ class JobsSpider(scrapy.Spider):
                 company_urls.append(company_url or '')
 
             if job_url:
-                ycombinatorlink = 'https://news.ycombinator.com/'
                 if 'http' not in job_url:
                     job_url = ycombinatorlink + job_url
                 job_urls.append(job_url)
@@ -52,5 +52,5 @@ class JobsSpider(scrapy.Spider):
 
         jobs_zip_object = zip(job_titles, company_urls, job_urls, job_posting_dates)
         jobs_list = list(jobs_zip_object)
-        yield JobItem(job = jobs_list)
+        yield JobItem(job=jobs_list)
 
