@@ -1,5 +1,6 @@
 import scrapy
 
+
 class JobsSpider(scrapy.Spider):
     name = 'jobs'
     start_urls = [
@@ -8,26 +9,28 @@ class JobsSpider(scrapy.Spider):
 
     def parse(self, response):
         items = response.css("tr.athing, td.subtext")
-        #times = response.css("td.subtext")
+        main_list=[]
         for item in items:
 
-                job_title = item.css("td.title a.storylink::text").get()
-                company_url = item.css("td.title span.sitebit.comhead a span.sitestr::text").get()
-                job_url = item.css("td.title a.storylink ::attr(href)").get()
-                job_posting_date = item.css("span.age a::text").get()
-                yield{
-                    'Job title': job_title, 'Company URL': company_url, 'Job URL': job_url,
-                    'Job posting date': job_posting_date
-                }
+            job_title = item.css("td.title a.storylink::text").get()
+            company_url = item.css("td.title span.sitebit.comhead a span.sitestr::text").get()
+            job_url = item.css("td.title a.storylink ::attr(href)").get()
+            job_posting_date = item.css("span.age a::text").get()
+            if job_title is not None:
+                main_list.append(job_title)
+                main_list.append(company_url or'')
+            if job_url is not None:
+                main_list.append(job_url)
+            if job_posting_date is not None:
+                main_list.append(job_posting_date)
 
-        # for time in times:
-        #
-        #         job_posting_date = time.css("span.age a::text").get()
-        #         if job_posting_date:
-        #             yield{
-        #                 'Job posting date': job_posting_date
-        #             }
-print("done")
+            # yield{
+            #     'Job title': job_title, 'Company URL': company_url, 'Job URL': job_url,
+            #     'Job posting date': job_posting_date
+            # }
+        print(main_list)
+
+
         # Job Titles Code:
         # job_titles = response.css(".storylink::text").getall()
         # titles = []
