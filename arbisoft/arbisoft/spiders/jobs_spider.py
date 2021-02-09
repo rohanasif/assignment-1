@@ -2,6 +2,7 @@ import scrapy
 import datetime
 from ..items import JobItem
 
+
 class JobsSpider(scrapy.Spider):
     name = 'jobs'
     start_urls = [
@@ -10,16 +11,16 @@ class JobsSpider(scrapy.Spider):
 
     def parse(self, response):
 
-        items = response.css("tr.athing, td.subtext")
+        items = response.css("tr.athing td.title, td.subtext")
         job_titles = []
         company_urls = []
         job_urls = []
         job_posting_dates = []
         for item in items:
 
-            job_title = item.css("td.title a.storylink::text").get()
-            company_url = item.css("td.title span.sitebit.comhead a span.sitestr::text").get()
-            job_url = item.css("td.title a.storylink ::attr(href)").get()
+            job_title = item.css("a.storylink::text").get()
+            company_url = item.css("span.sitebit.comhead a span.sitestr::text").get()
+            job_url = item.css("a.storylink ::attr(href)").get()
             job_posting_date = item.css("span.age a::text").get()
 
             if job_title:
@@ -52,3 +53,4 @@ class JobsSpider(scrapy.Spider):
         jobs_zip_object = zip(job_titles, company_urls, job_urls, job_posting_dates)
         jobs_list = list(jobs_zip_object)
         yield JobItem(job = jobs_list)
+
