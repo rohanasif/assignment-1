@@ -1,6 +1,6 @@
 import scrapy
 import datetime
-
+from ..items import JobItem
 
 class JobsSpider(scrapy.Spider):
     name = 'jobs'
@@ -51,5 +51,4 @@ class JobsSpider(scrapy.Spider):
 
         jobs_zip_object = zip(job_titles, company_urls, job_urls, job_posting_dates)
         jobs_list = list(jobs_zip_object)
-        yield jobs_list
-
+        yield JobItem(job = jobs_list)
