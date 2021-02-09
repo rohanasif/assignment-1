@@ -1,6 +1,7 @@
 import scrapy
 import datetime
 
+
 class JobsSpider(scrapy.Spider):
     name = 'jobs'
     start_urls = [
