@@ -1,5 +1,5 @@
 import scrapy
-
+from ..items import ArbisoftItem
 
 class JobsSpider(scrapy.Spider):
     name = 'jobs'
@@ -8,8 +8,11 @@ class JobsSpider(scrapy.Spider):
     ]
 
     def parse(self, response):
+
+        things = ArbisoftItem()
+
         items = response.css("tr.athing, td.subtext")
-        main_list=[]
+        # main_list=[]
         for item in items:
 
             job_title = item.css("td.title a.storylink::text").get()
@@ -17,20 +20,25 @@ class JobsSpider(scrapy.Spider):
             job_url = item.css("td.title a.storylink ::attr(href)").get()
             job_posting_date = item.css("span.age a::text").get()
             if job_title is not None:
-                main_list.append(job_title)
-                main_list.append(company_url or'')
+                # main_list.append(job_title)
+                # main_list.append(company_url or '')
+                things['job_title'] = job_title
+                things['company_url'] = company_url
             if job_url is not None:
-                main_list.append(job_url)
+                # main_list.append(job_url)
+                things['job_url'] = job_url
             if job_posting_date is not None:
-                main_list.append(job_posting_date)
+                # main_list.append(job_posting_date)
+                things['job_posting_date'] = job_posting_date
 
-            # yield{
-            #     'Job title': job_title, 'Company URL': company_url, 'Job URL': job_url,
-            #     'Job posting date': job_posting_date
-            # }
-        print(main_list)
+            # things['job_title'] = job_title
+            # things['company_url'] = company_url
+            # things['job_url'] = job_url
+            # things['job_posting_date'] = job_posting_date
 
+            yield things
 
+            print('done')
         # Job Titles Code:
         # job_titles = response.css(".storylink::text").getall()
         # titles = []
