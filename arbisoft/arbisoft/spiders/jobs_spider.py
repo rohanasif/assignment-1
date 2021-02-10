@@ -23,6 +23,17 @@ class JobsSpider(scrapy.Spider):
             company_url = item.css("span.sitebit.comhead a span.sitestr::text").get()
             job_url = item.css("a.storylink ::attr(href)").get()
             job_posting_date = item.css("span.age a::text").get()
+            if job_posting_date:
+                if 'days' in job_posting_date and int(job_posting_date[:2]) > 5:
+                    break
+            if job_posting_date:
+                if 'days' in job_posting_date or 'day' in job_posting_date:
+                    job_posting_dates.append(str(datetime.date.today() -
+                                                     datetime.timedelta(days=int(job_posting_date[:2]))))
+                elif 'hour' in job_posting_date or 'hours' in job_posting_date:
+                    full_date = datetime.datetime.now() - datetime.timedelta(hours=int(job_posting_date[:2]))
+                    simple_date = full_date.date()
+                    job_posting_dates.append(str(simple_date))
 
             if job_title:
                 if 'hiring ' in job_title:
@@ -40,17 +51,16 @@ class JobsSpider(scrapy.Spider):
                 if 'http' not in job_url:
                     job_url = ycombinatorlink + job_url
                 job_urls.append(job_url)
-
-            if job_posting_date:
-                if 'days' in job_posting_date or 'day' in job_posting_date:
-                    job_posting_dates.append(str(datetime.date.today() -
-                                                     datetime.timedelta(days=int(job_posting_date[:2]))))
-                else:
-                    full_date = datetime.datetime.now() - datetime.timedelta(hours=int(job_posting_date[:2]))
-                    simple_date = full_date.date()
-                    job_posting_dates.append(str(simple_date))
-
+            # print('done')
         jobs_zip_object = zip(job_titles, company_urls, job_urls, job_posting_dates)
         jobs_list = list(jobs_zip_object)
-        yield JobItem(job=jobs_list)
+        if jobs_list:
+            yield JobItem(job=jobs_list)
+
+        next_page = response.css("a.morelink::attr(href)").get()
+        # print(next_page)
+        if next_page:
+            if job_posting_date:
+                if 'days' in job_posting_date and int(job_posting_date[:2]) > 5:
+                    yield response.follow(next_page, callback=self.parse)
 
