@@ -1,6 +1,7 @@
 import scrapy
 import datetime
 from ..items import JobItem
+import re
 
 
 class JobsSpider(scrapy.Spider):
@@ -29,22 +30,18 @@ class JobsSpider(scrapy.Spider):
             if job_posting_date:
                 if 'days' in job_posting_date or 'day' in job_posting_date:
                     job_posting_dates.append(str(datetime.date.today() -
-                                                     datetime.timedelta(days=int(job_posting_date[:2]))))
+                                                 datetime.timedelta(days=int(job_posting_date[:2]))))
                 elif 'hour' in job_posting_date or 'hours' in job_posting_date:
                     full_date = datetime.datetime.now() - datetime.timedelta(hours=int(job_posting_date[:2]))
                     simple_date = full_date.date()
                     job_posting_dates.append(str(simple_date))
 
             if job_title:
-                if 'hiring ' in job_title:
-                    job_title = job_title.split("hiring ")[1]
-                    if job_title.startswith('– '):
-                        job_title = job_title.replace('– ', '')
-                elif 'Hiring ' in job_title:
-                    job_title = job_title.split("Hiring ")[1]
-                    if job_title.startswith('– '):
-                        job_title = job_title.replace('– ', '')
-                job_titles.append(job_title)
+                pattern = re.compile(r'(?<=[hH]iring ).*')
+                matches = pattern.finditer(job_title)
+                for match in matches:
+                    job_titles.append(match[0])
+
                 company_urls.append(company_url or '')
 
             if job_url:
@@ -64,3 +61,15 @@ class JobsSpider(scrapy.Spider):
                 if 'days' in job_posting_date and int(job_posting_date[:2]) > 5:
                     yield response.follow(next_page, callback=self.parse)
 
+
+            # if job_title:
+            #     if 'hiring ' in job_title:
+            #         job_title = job_title.split("hiring ")[1]
+            #         if job_title.startswith('– '):
+            #             job_title = job_title.replace('– ', '')
+            #     elif 'Hiring ' in job_title:
+            #         job_title = job_title.split("Hiring ")[1]
+            #         if job_title.startswith('– '):
+            #             job_title = job_title.replace('– ', '')
+            #     job_titles.append(job_title)
+            #     company_urls.append(company_url or '')
