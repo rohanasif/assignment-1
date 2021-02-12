@@ -43,12 +43,17 @@ class JobsSpider(scrapy.Spider):
                     job['job_posting_date'] = str(simple_date)
 
             if job_title:
-                pattern = re.compile(r'(?<=[hH]iring ).*')
-                matches = pattern.finditer(job_title)
-                for match in matches:
-                    job['job_title'] = match[0]
-
-                job['company_url'] = company_url or ''
+                if 'hiring' in job_title or 'Hiring' in job_title:
+                    if job_title.endswith('hiring') or job_title.endswith('Hiring'):
+                        job['job_title'] = job_title
+                    else:
+                        pattern = re.compile(r'(?<=[hH]iring ).*')
+                        matches = pattern.finditer(job_title)
+                        for match in matches:
+                            job['job_title'] = match[0]
+                else:
+                    job['job_title'] = job_title
+            job['company_url'] = company_url or ''
 
             if job_url:
                 if 'http' not in job_url:
