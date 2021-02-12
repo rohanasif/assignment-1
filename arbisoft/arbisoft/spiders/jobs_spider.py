@@ -57,5 +57,5 @@ class JobsSpider(scrapy.Spider):
             yield job
         next_page = response.css("a.morelink::attr(href)").get()
         if next_page and job_posting_date:
-            if 'days' in job_posting_date and int(job_posting_date[:2]) > 5:
+            if 'days' in job_posting_date and int(job_posting_date[:2]) < 5:
                 yield response.follow(next_page, callback=self.parse)
