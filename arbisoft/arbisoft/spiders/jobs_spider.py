@@ -12,17 +12,16 @@ class JobsSpider(scrapy.Spider):
 
     def parse(self, response):
 
-
-
-        items = response.css("tr.athing td.title, td.subtext")
-
+        times = response.css("span.age")
+        jobitems = response.css("tr.athing")
+        items = zip(times, jobitems)
         ycombinatorlink = 'https://news.ycombinator.com/'
-        for item in items:
+        for time, jobitem in items:
             job = JobItem()
-            job_title = item.css("a.storylink::text").get()
-            company_url = item.css("span.sitebit.comhead a span.sitestr::text").get()
-            job_url = item.css("a.storylink ::attr(href)").get()
-            job_posting_date = item.css("span.age a::text").get()
+            job_title = jobitem.css("a.storylink::text").get()
+            company_url = jobitem.css("span.sitebit.comhead a span.sitestr::text").get()
+            job_url = jobitem.css("a.storylink ::attr(href)").get()
+            job_posting_date = time.css("a::text").get()
             if job_posting_date:
                 if 'days' in job_posting_date and int(job_posting_date[:2]) > 5:
                     break
@@ -47,10 +46,8 @@ class JobsSpider(scrapy.Spider):
                 if 'http' not in job_url:
                     job_url = ycombinatorlink + job_url
                 job['job_url'] = job_url
-
             yield job
         next_page = response.css("a.morelink::attr(href)").get()
-        # print(next_page)
         if next_page and job_posting_date:
             if 'days' in job_posting_date and int(job_posting_date[:2]) > 5:
                 yield response.follow(next_page, callback=self.parse)
