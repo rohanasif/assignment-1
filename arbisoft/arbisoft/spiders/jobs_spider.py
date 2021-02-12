@@ -33,6 +33,10 @@ class JobsSpider(scrapy.Spider):
                     full_date = datetime.datetime.now() - datetime.timedelta(hours=int(job_posting_date[:2]))
                     simple_date = full_date.date()
                     job['job_posting_date'] = str(simple_date)
+                elif 'minute' in job_posting_date:
+                    full_date = datetime.datetime.now() - datetime.timedelta(minutes=int(job_posting_date[:2]))
+                    simple_date = full_date.date()
+                    job['job_posting_date'] = str(simple_date)
 
             if job_title:
                 pattern = re.compile(r'(?<=[hH]iring ).*')
