@@ -66,16 +66,3 @@ class JobsSpider(scrapy.Spider):
             if job_posting_date:
                 if 'days' in job_posting_date and int(job_posting_date[:2]) > 5:
                     yield response.follow(next_page, callback=self.parse)
-
-
-            # if job_title:
-            #     if 'hiring ' in job_title:
-            #         job_title = job_title.split("hiring ")[1]
-            #         if job_title.startswith('– '):
-            #             job_title = job_title.replace('– ', '')
-            #     elif 'Hiring ' in job_title:
-            #         job_title = job_title.split("Hiring ")[1]
-            #         if job_title.startswith('– '):
-            #             job_title = job_title.replace('– ', '')
-            #     job_titles.append(job_title)
-            #     company_urls.append(company_url or '')
