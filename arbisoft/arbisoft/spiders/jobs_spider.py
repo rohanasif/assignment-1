@@ -12,6 +12,8 @@ class JobsSpider(scrapy.Spider):
 
     def parse(self, response):
 
+        jobs = JobItem()
+
         items = response.css("tr.athing td.title, td.subtext")
         job_titles = []
         company_urls = []
@@ -24,8 +26,9 @@ class JobsSpider(scrapy.Spider):
             company_url = item.css("span.sitebit.comhead a span.sitestr::text").get()
             job_url = item.css("a.storylink ::attr(href)").get()
             job_posting_date = item.css("span.age a::text").get()
-            if job_posting_date and 'days' in job_posting_date and int(job_posting_date[:2]) > 5:
-                break
+            if job_posting_date:
+                if 'days' in job_posting_date and int(job_posting_date[:2]) > 5:
+                    break
             if job_posting_date:
                 if 'day' in job_posting_date:
                     job_posting_dates.append(str(datetime.date.today() -
@@ -43,20 +46,26 @@ class JobsSpider(scrapy.Spider):
 
                 company_urls.append(company_url or '')
 
-            if job_url and 'http' not in job_url:
-                job_url = ycombinatorlink + job_url
+            if job_url:
+                if 'http' not in job_url:
+                    job_url = ycombinatorlink + job_url
                 job_urls.append(job_url)
             # print('done')
         jobs_zip_object = zip(job_titles, company_urls, job_urls, job_posting_dates)
         jobs_list = list(jobs_zip_object)
-        if jobs_list:
-            yield JobItem(job_title=jobs_list)
-
+        for item in jobs_list:
+            if jobs_list:
+                jobs['job_title'] = job_titles[jobs_list.index(item)]
+                jobs['company_url'] = company_urls[jobs_list.index(item)]
+                jobs['job_url'] = job_urls[jobs_list.index(item)]
+                jobs['job_posting_date'] = job_posting_dates[jobs_list.index(item)]
+                yield jobs
         next_page = response.css("a.morelink::attr(href)").get()
         # print(next_page)
         if next_page:
-            if job_posting_date and 'days' in job_posting_date and int(job_posting_date[:2]) > 5:
-                yield response.follow(next_page, callback=self.parse)
+            if job_posting_date:
+                if 'days' in job_posting_date and int(job_posting_date[:2]) > 5:
+                    yield response.follow(next_page, callback=self.parse)
 
 
             # if job_title:
