@@ -11,8 +11,8 @@ class JobsSpider(scrapy.Spider):
     ]
     ycombinatorlink = 'https://news.ycombinator.com/'
 
-    def generate_posting_dates(self, time, job):
-        job_posting_date = time.css("a::text").get()
+    def generate_posting_dates(self, job, job_posting_date):
+
         if job_posting_date:
             if 'day' in job_posting_date:
                 job['job_posting_date'] = str(datetime.date.today() -
@@ -29,7 +29,7 @@ class JobsSpider(scrapy.Spider):
                 full_date = datetime.datetime.now() - datetime.timedelta(seconds=int(job_posting_date[:2]))
                 simple_date = full_date.date()
                 job['job_posting_date'] = str(simple_date)
-        return job['job_posting_date'], job_posting_date
+        return job['job_posting_date']
 
     def generate_job_titles(self, jobattribute, job):
         job_title = jobattribute.css("a.storylink::text").get()
@@ -44,12 +44,12 @@ class JobsSpider(scrapy.Spider):
                         job['job_title'] = match[0]
             else:
                 job['job_title'] = job_title
-        return job['job_title'], job_title
+        return job['job_title']
 
     def generate_company_urls(self, jobattribute, job):
         company_url = jobattribute.css("span.sitebit.comhead a span.sitestr::text").get()
         job['company_url'] = company_url or ''
-        return job['company_url'], company_url
+        return job['company_url']
 
     def generate_job_urls(self, jobattribute, job):
         job_url = jobattribute.css("a.storylink ::attr(href)").get()
@@ -57,26 +57,27 @@ class JobsSpider(scrapy.Spider):
             if 'http' not in job_url:
                 job_url = self.ycombinatorlink + job_url
             job['job_url'] = job_url
-        return job['job_url'], job_url
+        return job['job_url']
 
     def parse(self, response):
-        job_posting_date = self.generate_posting_dates(time=, job=)
-        job_title = self.generate_job_titles(jobattribute=, job=)
-        company_url = self.generate_company_urls(jobattribute=, job=)
-        job_url = self.generate_job_urls(jobattribute=, job=)
+
         times = response.css("span.age")
         jobattributes = response.css("tr.athing")
         items = zip(times, jobattributes)
+
         for time, jobattribute in items:
             job = JobItem()
+            job_posting_date = time.css("a::text").get()
             if job_posting_date:
                 if 'days' in job_posting_date and int(job_posting_date[:2]) > 5:
                     break
-            self.generate_posting_dates(job_posting_date)
-            self.generate_job_titles(job_title)
-            self.generate_company_urls(company_url)
-            self.generate_job_urls(job_url, self.ycombinatorlink)
+            self.generate_posting_dates(job, job_posting_date)
+            self.generate_job_titles(jobattribute, job)
+            self.generate_company_urls(jobattribute, job)
+            self.generate_job_urls(jobattribute, job)
+
             yield job
+
         next_page = response.css("a.morelink::attr(href)").get()
         if next_page and job_posting_date:
             if 'days' in job_posting_date and int(job_posting_date[:2]) < 5:
