@@ -19,7 +19,7 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 
 db = SQLAlchemy(app)  # database object of the app
-ma = Marshmallow(app)  # to make everything json deserializable
+ma = Marshmallow(app)  # to make everything json serializable
 jwt = JWTManager(app)  # for token management
 mail = Mail(app)  # for mail sending
 
@@ -112,7 +112,7 @@ def url_variable(name: str, age: int):
 
 @app.route('/planets', methods=['GET'])
 def planets():
-    planets_list = Planet.query.all()  # stores a list of all planets from fetched from the database
+    planets_list = Planet.query.all()  # stores a list of all planets fetched from the database
     result = planets_schema.dump(planets_list)  # serialized list of planets
     return jsonify(result)
 
@@ -243,6 +243,7 @@ class Planet(db.Model):  # planets table
     distance = Column(Float)
 
 
+# Process of serializing:
 class UserSchema(ma.Schema):
     class Meta:
         fields = ('id', 'first_name', 'last_name', 'email', 'password')
